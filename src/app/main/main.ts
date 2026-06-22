@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { WeatherService } from '../services/weather.service';
 import { FormsModule } from '@angular/forms';
 
@@ -6,18 +6,49 @@ import { FormsModule } from '@angular/forms';
   selector: 'app-main',
   templateUrl: './main.html',
   styleUrl: './main.scss',
-  imports: [FormsModule]
+  imports: [FormsModule],
 })
 export class Main {
   protected location: string = '';
   protected willItRain?: boolean;
 
+  isSpinning = signal(false);
+  totalRotation = signal(0);
+  animationDurationSec = 5;
+
   constructor(private weatherService: WeatherService) { }
 
   protected checkWeather() {
-    this.weatherService.checkWeather(this.location)
-      .subscribe(response => {
-        this.willItRain = Boolean(response.current.will_it_rain)
-      })
+    if (!!this.location)
+      this.weatherService.checkWeather(this.location)
+        .subscribe(response => {
+          this.willItRain = Boolean(response.current.will_it_rain);
+          this.spinTheWheel();
+        })
+
+  }
+
+  spinTheWheel() {
+    const YES_CENTER = 180;
+    const NO_CENTER = 360;
+    const OFFSET = 45;
+
+    this.totalRotation.update(prev => {
+      const center = this.willItRain ? YES_CENTER : NO_CENTER;
+
+      const currentMod = prev % 360;
+      const centerDiff = (center - currentMod + 360) % 360;
+      const newCenterValue = prev + 5 * 360 + centerDiff;
+      const randomOffset = (Math.random() * 2 - 1) * OFFSET;
+
+      return newCenterValue + randomOffset;
+    });
+
+    this.isSpinning.set(true);
+
+    const durationMs = this.animationDurationSec * 1000
+    setTimeout(() => {
+      this.isSpinning.set(false);
+    }, durationMs);
   }
 }

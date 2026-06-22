@@ -1,0 +1,84 @@
+.board {
+    position: relative;
+    width: 10rem;
+    height: 10rem;
+
+    .pointer {
+        z-index: 500;
+        display: block;
+        height: 2rem;
+        width: 2rem;
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        right: -1rem;
+
+        &:before {
+            content: '';
+            display: block;
+            position: absolute;
+            right: 0;
+            top: 0;
+            width: 0;
+            height: 0;
+            border-style: solid;
+            border-width: 0 0 1rem 2rem;
+            border-color: transparent transparent black transparent;
+        }
+
+        &:after {
+            content: '';
+            display: block;
+            position: absolute;
+            right: 0;
+            bottom: 0;
+            width: 0;
+            height: 0;
+            border-style: solid;
+            border-width: 0 2rem 1rem 0;
+            border-color: transparent black transparent transparent;
+        }
+    }
+}
+
+.fortune-wheel {
+    display: flex;
+    width: inherit;
+    height: inherit;
+
+    border-radius: 50%;
+    overflow: auto;
+
+    &.spinning {
+        animation: rotate-to var(--animation-duration) ease-out forwards;
+    }
+
+    .yes-slice,
+    .no-slice {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .yes-slice {
+        background-color: red;
+        width: 50%;
+        height: 100%;
+    }
+
+    .no-slice {
+        background-color: blue;
+        width: 50%;
+        height: 100%;
+    }
+}
+
+@keyframes rotate-to {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(var(--end-angle));
+    }
+}

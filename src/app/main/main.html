@@ -1,4 +1,21 @@
 <form (ngSubmit)="checkWeather()" #f="ngForm">
+    Will it rain today?
     <input [(ngModel)]="location" name="location" />
-    <button class="btn btn-primary">check</button>
+    <button class="btn btn-primary" [disabled]="!!!location">check</button>
 </form>
+<div class="board">
+    <div class="fortune-wheel" [class.spinning]="isSpinning()" [style.--end-angle]="totalRotation() + 'deg'"
+        [style.transform]="'rotate(' + totalRotation() + 'deg)'"
+        [style.--animation-duration]="animationDurationSec+ 's'">
+        <div class="yes-slice">
+            yes
+        </div>
+        <div class="no-slice">
+            no
+        </div>
+    </div>
+    <div class="pointer"></div>
+</div>
+@if(!isSpinning() && willItRain !== undefined){
+Answer: {{willItRain ? 'yes' : 'no'}}
+}
