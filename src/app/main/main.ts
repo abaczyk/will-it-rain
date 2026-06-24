@@ -1,6 +1,7 @@
 import { Component, signal } from '@angular/core';
 import { WeatherService } from '../services/weather.service';
 import { FormsModule } from '@angular/forms';
+import confetti from "@hiseb/confetti";
 
 @Component({
   selector: 'app-main',
@@ -47,6 +48,22 @@ export class Main {
     const durationMs = this.animationDurationSec * 1000
     setTimeout(() => {
       this.isSpinning.set(false);
+      if (!this.willItRain) {
+        confetti({
+          position: { x: 0, y: 0 },
+          count: 200,
+          size: 1,
+          velocity: 200,
+          fade: false
+        });
+        confetti({
+          position: { x: window.innerWidth, y: 0 },
+          count: 200,
+          size: 1,
+          velocity: 200,
+          fade: false
+        });
+      }
     }, durationMs);
   }
 }
