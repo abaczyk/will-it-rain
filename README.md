@@ -4,7 +4,7 @@ This project was generated using [Angular CLI](https://github.com/angular/angula
 
 The main purpose of this web app is to check whether it will rain today in a specific location. To achieve that, [Weather API](https://app.swaggerhub.com/apis-docs/WeatherAPI.com/WeatherAPI/1.0.2) was used. 
 
-<img width="486" height="910" alt="image" src="https://github.com/user-attachments/assets/0bb8a343-1430-4c8b-abd3-126a94ebe5a4" />
+<img width="471" height="895" alt="image" src="https://github.com/user-attachments/assets/bb980c1e-afc3-45a0-bca6-40c91098415c" />
 <img width="486" height="906" alt="image" src="https://github.com/user-attachments/assets/e053f573-8a72-44ba-8f91-cdb0351e10c3" />
 
 ## Development server
