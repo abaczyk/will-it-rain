@@ -6,6 +6,8 @@ $placeholder: #878DC5;
 $primary: #8834F6;
 $primary-dark: #501E90;
 
+$invalid: #E61819;
+
 .col-gap-3 {
     display: flex;
     flex-direction: column;
@@ -26,12 +28,12 @@ $primary-dark: #501E90;
         color: $offwhite;
         margin-bottom: 0;
         color: #F1EDE9;
+
         text-shadow: 0 0 10px $primary;
         text-align: center;
         font-size: 4rem;
         font-weight: 400;
         line-height: 4.6875rem;
-
         font-family: "BraahOne";
     }
 
@@ -74,6 +76,19 @@ $primary-dark: #501E90;
                 box-shadow: 0 0 4px 0 $bg-light;
             }
         }
+
+        &.invalid {
+            .form-control {
+                border: 1px solid $invalid;
+            }
+
+            .error,
+            label,
+            input {
+                color: $invalid;
+            }
+        }
+
     }
 
     .btn-primary {

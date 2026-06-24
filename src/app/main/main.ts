@@ -1,16 +1,19 @@
 import { Component, signal } from '@angular/core';
 import { WeatherService } from '../services/weather.service';
-import { FormsModule } from '@angular/forms';
+import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import confetti from "@hiseb/confetti";
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-main',
   templateUrl: './main.html',
   styleUrl: './main.scss',
-  imports: [FormsModule],
+  imports: [ReactiveFormsModule, CommonModule],
 })
 export class Main {
-  protected location: string = '';
+  protected form = new FormGroup({
+    location: new FormControl(null, Validators.required)
+  })
   protected willItRain?: boolean;
 
   isSpinning = signal(false);
@@ -20,11 +23,16 @@ export class Main {
   constructor(private weatherService: WeatherService) { }
 
   protected checkWeather() {
-    if (!!this.location)
-      this.weatherService.checkWeather(this.location)
+    const location = this.form.get('location')?.value;
+    if (!!location)
+      this.weatherService.checkWeather(location)
         .subscribe(response => {
-          this.willItRain = Boolean(response.current.will_it_rain);
-          this.spinTheWheel();
+          if (response.error) {
+            this.form.get('location')?.setErrors({ 'Invalid location': true });
+          } else {
+            this.willItRain = Boolean(response.current.will_it_rain);
+            this.spinTheWheel();
+          }
         })
 
   }

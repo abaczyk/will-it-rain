@@ -1,11 +1,19 @@
 <main class="main-container col-gap-3">
-    <form class="col-gap-3 align-items-center w-100" (ngSubmit)="checkWeather()" #f="ngForm">
+    <form [formGroup]="form" class="col-gap-3 align-items-center w-100" (ngSubmit)="checkWeather()">
         <h1>Will it rain today?</h1>
-        <div class="input">
+        @let locationControl = form.get('location');
+        @let invalid = locationControl?.invalid && (locationControl?.touched || locationControl?.dirty);
+        @let invalidLocation = invalid && (locationControl?.errors | keyvalue )?.[0]?.key === 'Invalid location';
+        <div class="input" [ngClass]="{'invalid': invalidLocation}">
             <label for="location">Location</label>
-            <input id="location" class="form-control" placeholder="" [(ngModel)]="location" name="location" />
+            <input id="location" class="form-control" placeholder="" formControlName="location" />
+            @if(invalidLocation){
+            <div class="error">
+                Invalid location
+            </div>
+            }
         </div>
-        <button class="btn btn-primary" [disabled]="!!!location">Check</button>
+        <button class="btn btn-primary" [disabled]="form.invalid">Check</button>
     </form>
     <div class="board">
         <div class="fortune-wheel" [class.spinning]="isSpinning()" [style.--end-angle]="totalRotation() + 'deg'"
