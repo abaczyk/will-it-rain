@@ -1,75 +1,157 @@
-.board {
-    position: relative;
-    width: 10rem;
-    height: 10rem;
+$bg: #08081E;
+$bg-light: #131844;
+$bg-dark: #050914;
+$offwhite: #F1EDE9;
+$placeholder: #878DC5;
+$primary: #8834F6;
+$primary-dark: #501E90;
 
-    .pointer {
-        z-index: 500;
-        display: block;
-        height: 2rem;
-        width: 2rem;
-        position: absolute;
-        top: 50%;
-        transform: translateY(-50%);
-        right: -1rem;
-
-        &:before {
-            content: '';
-            display: block;
-            position: absolute;
-            right: 0;
-            top: 0;
-            width: 0;
-            height: 0;
-            border-style: solid;
-            border-width: 0 0 1rem 2rem;
-            border-color: transparent transparent black transparent;
-        }
-
-        &:after {
-            content: '';
-            display: block;
-            position: absolute;
-            right: 0;
-            bottom: 0;
-            width: 0;
-            height: 0;
-            border-style: solid;
-            border-width: 0 2rem 1rem 0;
-            border-color: transparent black transparent transparent;
-        }
-    }
+.col-gap-3 {
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
 }
 
-.fortune-wheel {
-    display: flex;
-    width: inherit;
-    height: inherit;
+.main-container {
+    background: linear-gradient(180deg, rgba(8, 8, 30, 0.20) 0%, rgba(15, 23, 49, 0.20) 100%), $bg;
+    min-height: 100vh;
+    height: fit-content;
+    width: 100vw;
 
-    border-radius: 50%;
-    overflow: auto;
+    padding: 4rem 2rem;
 
-    &.spinning {
-        animation: rotate-to var(--animation-duration) ease-out forwards;
+    align-items: center;
+
+    h1 {
+        color: $offwhite;
+        margin-bottom: 0;
+        color: #F1EDE9;
+        text-shadow: 0 0 10px $primary;
+        text-align: center;
+        font-size: 4rem;
+        font-weight: 400;
+        line-height: 4.6875rem;
+
+        font-family: "BraahOne";
     }
 
-    .yes-slice,
-    .no-slice {
+    .input {
+        width: 100%;
+        position: relative;
+        font-family: "Kanchenjunga";
+        color: $placeholder;
+        font-weight: 600;
+
+        label {
+            position: absolute;
+            left: 0.625rem;
+            font-size: 1rem;
+
+            transition: .15s ease;
+        }
+
+        &:has(input:placeholder-shown:not(:focus-within)) {
+            label {
+                left: 1rem;
+                font-size: 1.5rem;
+
+                top: 50%;
+                transform: translateY(-50%);
+            }
+        }
+
+        .form-control {
+            background: $bg-light;
+            border: none;
+            box-shadow: none;
+            color: $offwhite;
+            padding: 1rem;
+            height: 5rem;
+            border-radius: 0.75rem;
+            font-size: 1.5rem;
+
+            &:focus-within {
+                box-shadow: 0 0 4px 0 $bg-light;
+            }
+        }
+    }
+
+    .btn-primary {
         display: flex;
-        justify-content: center;
         align-items: center;
+        justify-content: center;
+
+        background: linear-gradient(179deg, $primary -24.1%, $primary-dark 150.43%);
+        color: $bg;
+        font-family: "BraahOne";
+        padding: 1rem;
+        border-radius: 0.75rem;
+        border: none;
+        width: 100%;
+
+        text-align: center;
+        font-size: 2.5rem;
+        font-weight: 400;
+        line-height: normal;
+
+        &:disabled {
+            opacity: 0.4;
+        }
     }
 
-    .yes-slice {
-        background-color: red;
-        width: 50%;
-        height: 100%;
+    .board {
+        position: relative;
+        width: 18.75rem;
+        height: 18.75rem;
+
+        .pointer {
+            z-index: 500;
+            display: block;
+
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            right: -1rem;
+        }
     }
 
-    .no-slice {
-        background-color: blue;
-        width: 50%;
-        height: 100%;
+    .fortune-wheel {
+        display: flex;
+        width: inherit;
+        height: inherit;
+
+        border-radius: 50%;
+        overflow: auto;
+
+        &.spinning {
+            animation: rotate-to var(--animation-duration) ease-out forwards;
+        }
+
+        .yes-slice,
+        .no-slice {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            font-family: "BraahOne";
+            color: $bg;
+            text-align: center;
+            font-size: 2.5rem;
+            font-weight: 400;
+            line-height: normal;
+        }
+
+        .yes-slice {
+            background: linear-gradient(270deg, #009BF6 0%, #006AA8 100%);
+            width: 50%;
+            height: 100%;
+        }
+
+        .no-slice {
+            background: linear-gradient(90deg, #FECE46 0%, #FEA42F 100%);
+            width: 50%;
+            height: 100%;
+        }
     }
 }
 

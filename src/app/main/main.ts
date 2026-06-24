@@ -14,7 +14,7 @@ export class Main {
 
   isSpinning = signal(false);
   totalRotation = signal(0);
-  animationDurationSec = 5;
+  animationDurationSec = 3;
 
   constructor(private weatherService: WeatherService) { }
 
@@ -31,7 +31,6 @@ export class Main {
   spinTheWheel() {
     const YES_CENTER = 180;
     const NO_CENTER = 360;
-    const OFFSET = 45;
 
     this.totalRotation.update(prev => {
       const center = this.willItRain ? YES_CENTER : NO_CENTER;
@@ -39,9 +38,8 @@ export class Main {
       const currentMod = prev % 360;
       const centerDiff = (center - currentMod + 360) % 360;
       const newCenterValue = prev + 5 * 360 + centerDiff;
-      const randomOffset = (Math.random() * 2 - 1) * OFFSET;
 
-      return newCenterValue + randomOffset;
+      return newCenterValue;
     });
 
     this.isSpinning.set(true);
