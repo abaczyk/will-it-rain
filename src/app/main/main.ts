@@ -3,12 +3,14 @@ import { WeatherService } from '../services/weather.service';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import confetti from "@hiseb/confetti";
 import { CommonModule } from '@angular/common';
+import { GoogleMapsModule } from '@angular/google-maps';
+declare let google: any;
 
 @Component({
   selector: 'app-main',
   templateUrl: './main.html',
   styleUrl: './main.scss',
-  imports: [ReactiveFormsModule, CommonModule],
+  imports: [ReactiveFormsModule, CommonModule, GoogleMapsModule],
 })
 export class Main {
   protected form = new FormGroup({
@@ -16,14 +18,16 @@ export class Main {
   })
   protected willItRain?: boolean;
 
-  isSpinning = signal(false);
-  totalRotation = signal(0);
-  animationDurationSec = 3;
+  protected isSpinning = signal(false);
+  protected totalRotation = signal(0);
+  protected animationDurationSec = 3;
+
+  protected disabledLocation: boolean = false;
 
   constructor(private weatherService: WeatherService) { }
 
   protected checkWeather() {
-    const location = this.form.get('location')?.value;
+    const location = this.form.get('location')?.value
     if (!!location)
       this.weatherService.checkWeather(location)
         .subscribe(response => {
@@ -74,4 +78,44 @@ export class Main {
       }
     }, durationMs);
   }
+
+  getLocation() {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const { latitude, longitude } = position.coords;
+          if (typeof google !== 'undefined' && google.maps) {
+            let geocoder = new google.maps.Geocoder();
+            let latlng = new google.maps.LatLng(latitude, longitude);
+            geocoder.geocode(
+              { location: latlng },
+              (results: any, status: any) => {
+                if (status === google.maps.GeocoderStatus.OK) {
+                  let result = results?.[0];
+                  let addressComponents = result?.address_components;
+                  if (result) {
+                    const city = addressComponents[2].short_name.replace(
+                      ' ',
+                      '+'
+                    );
+                    this.form.get('location')?.setValue(city);
+                    this.checkWeather();
+                  } else {
+
+                  }
+                }
+              }
+            );
+          } else {
+            this.disabledLocation = true;
+
+          }
+        }, (error: GeolocationPositionError) => {
+          this.disabledLocation = true
+        })
+    } else {
+      this.disabledLocation = true;
+    }
+  }
 }
+

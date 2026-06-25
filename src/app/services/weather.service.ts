@@ -6,10 +6,10 @@ import { map, catchError, of } from 'rxjs';
   providedIn: 'root',
 })
 export class WeatherService {
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
-  checkWeather(location: string){
-    return this.http.get('current.json', { params : { q: location} }).pipe(
+  checkWeather(location: string) {
+    return this.http.get('current.json', { params: { q: location } }).pipe(
       map((response) => {
         return response;
       }),

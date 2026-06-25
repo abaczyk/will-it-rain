@@ -5,8 +5,14 @@
         @let invalid = locationControl?.invalid && (locationControl?.touched || locationControl?.dirty);
         @let invalidLocation = invalid && (locationControl?.errors | keyvalue )?.[0]?.key === 'Invalid location';
         <div class="input" [ngClass]="{'invalid': invalidLocation}">
-            <label for="location">Location</label>
-            <input id="location" class="form-control" placeholder="" formControlName="location" />
+            <div class="input-group"><label for="location">Location</label>
+                <input id="location" class="form-control" placeholder="" formControlName="location" />
+                <div class="input-group-text" [ngClass]="{'disabled': disabledLocation}" (click)="getLocation()">
+                    <span class="material-symbols-rounded">
+                        location_searching
+                    </span>
+                </div>
+            </div>
             @if(invalidLocation){
             <div class="error">
                 Invalid location
