@@ -6,6 +6,9 @@ The main purpose of this web app is to check whether it will rain today in a spe
 
 ![1782418315425](image/README/1782418315425.png)![1782418336128](image/README/1782418336128.png)
 
+
+https://github.com/user-attachments/assets/1ea472a3-f602-4390-9e8b-d26c3edb6a59
+
 ## Development server
 
 To start a local development server, run:
