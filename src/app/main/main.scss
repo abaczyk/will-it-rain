@@ -194,6 +194,46 @@ $invalid: #E61819;
     }
 }
 
+.icon-empty-state {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    font-family: "BraahOne";
+    font-size: 1.5rem;
+
+    .material-symbols-rounded {
+        font-size: 4rem;
+        color: $primary;
+    }
+}
+
+.description,
+.steps {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.step {
+    display: flex;
+    gap: 1rem;
+
+    .step-bubble {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 50%;
+        width: 2rem;
+        height: 2rem;
+        font-family: "BraahOne";
+        background: linear-gradient(179deg, $primary -24.1%, $primary-dark 150.43%);
+
+        flex: 0 0 auto;
+    }
+}
+
 @keyframes rotate-to {
     0% {
         transform: rotate(0deg);

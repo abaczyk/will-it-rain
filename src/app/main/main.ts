@@ -1,18 +1,22 @@
-import { Component, signal } from '@angular/core';
+import { ChangeDetectorRef, Component, signal, TemplateRef, ViewChild } from '@angular/core';
 import { WeatherService } from '../services/weather.service';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import confetti from "@hiseb/confetti";
 import { CommonModule } from '@angular/common';
 import { GoogleMapsModule } from '@angular/google-maps';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
+import { take } from 'rxjs';
 declare let google: any;
 
 @Component({
   selector: 'app-main',
   templateUrl: './main.html',
   styleUrl: './main.scss',
-  imports: [ReactiveFormsModule, CommonModule, GoogleMapsModule],
+  imports: [ReactiveFormsModule, CommonModule, GoogleMapsModule,],
 })
 export class Main {
+  @ViewChild('noLocationPermissionsTemplate') private noLocationPermissionsTemplate!: TemplateRef<any>;
+
   protected form = new FormGroup({
     location: new FormControl(null, Validators.required)
   })
@@ -24,7 +28,11 @@ export class Main {
 
   protected disabledLocation: boolean = false;
 
-  constructor(private weatherService: WeatherService) { }
+  protected modalRef?: BsModalRef;
+
+  constructor(private weatherService: WeatherService,
+    protected modalService: BsModalService,
+    private cdr: ChangeDetectorRef) { }
 
   protected checkWeather() {
     const location = this.form.get('location')?.value
@@ -107,14 +115,33 @@ export class Main {
               }
             );
           } else {
-            this.disabledLocation = true;
-
+            this.handleNoLocationPermissions();
           }
         }, (error: GeolocationPositionError) => {
-          this.disabledLocation = true
+          const message = Boolean(error.PERMISSION_DENIED) ? undefined : error.message;
+          this.handleNoLocationPermissions(message);
         })
     } else {
-      this.disabledLocation = true;
+      this.handleNoLocationPermissions();
+    }
+  }
+
+  handleNoLocationPermissions(errorMessage?: string) {
+    this.disabledLocation = true;
+    const initialState = !!errorMessage ? { errorMessage } : {}
+    this.openModal(this.noLocationPermissionsTemplate, initialState);
+    this.cdr.detectChanges();
+  }
+
+  openModal(template: TemplateRef<any>, initialState: any = {}) {
+    const showModal = () => this.modalRef = this.modalService.show(template, { initialState });
+    if (this.modalService.getModalsCount()) {
+      this.modalRef?.onHidden?.pipe(take(1)).subscribe(() =>
+        showModal()
+      );
+      this.modalRef?.hide();
+    } else {
+      showModal();
     }
   }
 }

@@ -58,3 +58,30 @@
         </svg>
     </div>
 </main>
+
+<ng-template #noLocationPermissionsTemplate>
+    <span aria-hidden="true" class="material-symbols-rounded close" (click)="modalRef?.hide()">close</span>
+    <div class="modal-body">
+        @let errorMessage = modalService.config.initialState?.['errorMessage'];
+        <div class="icon-empty-state">
+            <span class="material-symbols-rounded">location_off</span>
+            {{errorMessage ? errorMessage : 'Location access was denied'}}
+        </div>
+        @if(!errorMessage){
+        <div class="description align-items-center">
+            To use this feature:
+            <div class="steps">
+                <div class="step">
+                    <div class="step-bubble">1</div>
+                    <div class="step-description">Enable location permissions for this site in your browser settings
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-bubble">2</div>
+                    <div class="step-description">Refresh the page</div>
+                </div>
+            </div>
+        </div>
+        }
+    </div>
+</ng-template>
