@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, signal, TemplateRef, ViewChild } from '@angular/core';
+import { Component, signal, TemplateRef, ViewChild } from '@angular/core';
 import { WeatherService } from '../services/weather.service';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import confetti from "@hiseb/confetti";
@@ -12,7 +12,7 @@ declare let google: any;
   selector: 'app-main',
   templateUrl: './main.html',
   styleUrl: './main.scss',
-  imports: [ReactiveFormsModule, CommonModule, GoogleMapsModule,],
+  imports: [ReactiveFormsModule, CommonModule, GoogleMapsModule],
 })
 export class Main {
   @ViewChild('noLocationPermissionsTemplate') private noLocationPermissionsTemplate!: TemplateRef<any>;
@@ -26,13 +26,14 @@ export class Main {
   protected totalRotation = signal(0);
   protected animationDurationSec = 3;
 
-  protected disabledLocation: boolean = false;
+  protected disabledLocation = signal(false);
 
   protected modalRef?: BsModalRef;
 
-  constructor(private weatherService: WeatherService,
+  constructor(
+    private weatherService: WeatherService,
     protected modalService: BsModalService,
-    private cdr: ChangeDetectorRef) { }
+  ) { }
 
   protected checkWeather() {
     const location = this.form.get('location')?.value
@@ -127,10 +128,9 @@ export class Main {
   }
 
   handleNoLocationPermissions(errorMessage?: string) {
-    this.disabledLocation = true;
-    const initialState = !!errorMessage ? { errorMessage } : {}
+    this.disabledLocation.set(true)
+    const initialState = !!errorMessage ? { errorMessage } : {};
     this.openModal(this.noLocationPermissionsTemplate, initialState);
-    this.cdr.detectChanges();
   }
 
   openModal(template: TemplateRef<any>, initialState: any = {}) {

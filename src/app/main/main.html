@@ -8,7 +8,7 @@
             <div class="input-group">
                 <label for="location">Location</label>
                 <input id="location" class="form-control" placeholder="" formControlName="location" />
-                <div class="input-group-text" [ngClass]="{'disabled': disabledLocation}" (click)="getLocation()"
+                <div class="input-group-text" [ngClass]="{'disabled': disabledLocation()}" (click)="getLocation()"
                     aria-labe>
                     <span class="material-symbols-rounded" aria-hidden="true">
                         location_searching
